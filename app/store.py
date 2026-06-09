@@ -1,3 +1,4 @@
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 from app.models import Note, NoteCreate, NoteStatus, NoteUpdate
@@ -26,6 +27,7 @@ class NoteStore:
             title=payload.title,
             topic=payload.topic,
             status=NoteStatus.TODO,
+            created_at=datetime.now(UTC),
         )
         self._notes[note.id] = note
         return note

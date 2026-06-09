@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi.testclient import TestClient
 
 from app.main import app, store
@@ -28,6 +30,7 @@ def test_create_and_list_notes() -> None:
     assert created["title"] == "Learn FastAPI"
     assert created["topic"] == "backend"
     assert created["status"] == "todo"
+    assert datetime.fromisoformat(created["created_at"])
 
     list_response = client.get("/notes")
 
