@@ -51,6 +51,23 @@ def test_list_notes_can_filter_by_topic() -> None:
     assert response.json() == [backend_note]
 
 
+def test_list_notes_can_filter_by_status() -> None:
+    done_note = client.post(
+        "/notes",
+        json={"title": "Write tests", "topic": "testing"},
+    ).json()
+    client.patch(f"/notes/{done_note['id']}", json={"status": "done"})
+    client.post(
+        "/notes",
+        json={"title": "Learn FastAPI", "topic": "backend"},
+    )
+
+    response = client.get("/notes?status=done")
+
+    assert response.status_code == 200
+    assert response.json()[0]["id"] == done_note["id"]
+
+
 def test_update_note_status() -> None:
     note = client.post(
         "/notes",

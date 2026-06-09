@@ -2,7 +2,7 @@ from uuid import UUID
 
 from fastapi import FastAPI, HTTPException, Response, status
 
-from app.models import Note, NoteCreate, NoteUpdate
+from app.models import Note, NoteCreate, NoteStatus, NoteUpdate
 from app.store import NoteStore
 
 app = FastAPI(
@@ -20,8 +20,11 @@ def health() -> dict[str, str]:
 
 
 @app.get("/notes", response_model=list[Note])
-def list_notes(topic: str | None = None) -> list[Note]:
-    return store.list_notes(topic=topic)
+def list_notes(
+    topic: str | None = None,
+    status: NoteStatus | None = None,
+) -> list[Note]:
+    return store.list_notes(topic=topic, status=status)
 
 
 @app.post("/notes", response_model=Note, status_code=status.HTTP_201_CREATED)
