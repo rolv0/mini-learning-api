@@ -41,6 +41,7 @@ def test_create_and_list_notes() -> None:
     assert created["title"] == "Learn FastAPI"
     assert created["topic"] == "backend"
     assert created["status"] == "todo"
+    assert created["priority"] == "medium"
     assert datetime.fromisoformat(created["created_at"])
 
     list_response = client.get("/notes")
@@ -95,6 +96,40 @@ def test_update_note_status() -> None:
 
     assert response.status_code == 200
     assert response.json()["status"] == "done"
+
+
+def test_create_note_with_high_priority() -> None:
+    response = client.post(
+        "/notes",
+        json={"title": "Deploy API", "topic": "devops", "priority": "high"},
+    )
+
+    assert response.status_code == 201
+    assert response.json()["priority"] == "high"
+
+
+def test_update_note_priority() -> None:
+    note = client.post(
+        "/notes",
+        json={"title": "Refactor store", "topic": "backend"},
+    ).json()
+
+    response = client.patch(
+        f"/notes/{note['id']}",
+        json={"priority": "low"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["priority"] == "low"
+
+
+def test_invalid_priority_returns_422() -> None:
+    response = client.post(
+        "/notes",
+        json={"title": "Break things", "topic": "testing", "priority": "urgent"},
+    )
+
+    assert response.status_code == 422
 
 
 def test_delete_note() -> None:
