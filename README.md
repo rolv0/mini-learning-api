@@ -19,6 +19,7 @@ The API lets you create and manage learning notes. It is intentionally small, bu
 - Filter notes by topic or status
 - Create a learning note
 - Update a note status
+- Set note priority as `low`, `medium`, or `high`
 - Delete a note
 - In-memory storage, so it is easy to understand
 
@@ -86,7 +87,7 @@ For larger changes, create a branch and open a pull request.
 ```bash
 curl -X POST http://127.0.0.1:8000/notes ^
   -H "Content-Type: application/json" ^
-  -d "{\"title\":\"Learn FastAPI\",\"topic\":\"backend\"}"
+  -d "{\"title\":\"Learn FastAPI\",\"topic\":\"backend\",\"priority\":\"high\"}"
 ```
 
 On macOS/Linux:
@@ -94,7 +95,7 @@ On macOS/Linux:
 ```bash
 curl -X POST http://127.0.0.1:8000/notes \
   -H "Content-Type: application/json" \
-  -d '{"title":"Learn FastAPI","topic":"backend"}'
+  -d '{"title":"Learn FastAPI","topic":"backend","priority":"high"}'
 ```
 
 Filter notes by topic:
@@ -113,7 +114,6 @@ curl "http://127.0.0.1:8000/notes?status=done"
 
 These are good contribution ideas:
 
-- Add a `priority` field to notes
 - Add file-based persistence
 - Add more tests for invalid input
 - Improve the API documentation examples
