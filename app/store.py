@@ -27,6 +27,7 @@ class NoteStore:
             title=payload.title,
             topic=payload.topic,
             status=NoteStatus.TODO,
+            priority=payload.priority,
             created_at=datetime.now(UTC),
         )
         self._notes[note.id] = note
