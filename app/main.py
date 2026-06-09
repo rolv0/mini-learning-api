@@ -20,8 +20,8 @@ def health() -> dict[str, str]:
 
 
 @app.get("/notes", response_model=list[Note])
-def list_notes() -> list[Note]:
-    return store.list_notes()
+def list_notes(topic: str | None = None) -> list[Note]:
+    return store.list_notes(topic=topic)
 
 
 @app.post("/notes", response_model=Note, status_code=status.HTTP_201_CREATED)
