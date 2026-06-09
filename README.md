@@ -58,6 +58,19 @@ Open:
 pytest
 ```
 
+## Direct Commit Workflow
+
+For small solo changes, you can commit directly to `main`:
+
+```bash
+git status
+git add README.md
+git commit -m "Document direct commit workflow"
+git push
+```
+
+For larger changes, create a branch and open a pull request.
+
 ## API Endpoints
 
 | Method | Path | Description |
