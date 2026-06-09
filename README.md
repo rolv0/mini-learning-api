@@ -16,6 +16,7 @@ The API lets you create and manage learning notes. It is intentionally small, bu
 
 - Health check endpoint
 - List learning notes
+- Filter notes by topic or status
 - Create a learning note
 - Update a note status
 - Delete a note
@@ -62,7 +63,7 @@ pytest
 | Method | Path | Description |
 | --- | --- | --- |
 | `GET` | `/health` | Check if the API is running |
-| `GET` | `/notes` | List all notes |
+| `GET` | `/notes` | List all notes, optionally filtered by `topic` or `status` |
 | `POST` | `/notes` | Create a note |
 | `PATCH` | `/notes/{note_id}` | Update a note |
 | `DELETE` | `/notes/{note_id}` | Delete a note |
@@ -83,13 +84,23 @@ curl -X POST http://127.0.0.1:8000/notes \
   -d '{"title":"Learn FastAPI","topic":"backend"}'
 ```
 
+Filter notes by topic:
+
+```bash
+curl "http://127.0.0.1:8000/notes?topic=backend"
+```
+
+Filter notes by status:
+
+```bash
+curl "http://127.0.0.1:8000/notes?status=done"
+```
+
 ## Good First Issues
 
 These are good contribution ideas:
 
-- Add filtering by topic
 - Add a `priority` field to notes
-- Add a created timestamp
 - Add file-based persistence
 - Add more tests for invalid input
 - Improve the API documentation examples
