@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi.testclient import TestClient
 
 from app.main import app, store
@@ -8,6 +10,17 @@ client = TestClient(app)
 
 def setup_function() -> None:
     store.clear()
+
+
+def test_root_points_to_docs_and_health() -> None:
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "name": "Mini Learning API",
+        "docs": "/docs",
+        "health": "/health",
+    }
 
 
 def test_health_check() -> None:
@@ -28,6 +41,7 @@ def test_create_and_list_notes() -> None:
     assert created["title"] == "Learn FastAPI"
     assert created["topic"] == "backend"
     assert created["status"] == "todo"
+    assert datetime.fromisoformat(created["created_at"])
 
     list_response = client.get("/notes")
 
@@ -49,6 +63,23 @@ def test_list_notes_can_filter_by_topic() -> None:
 
     assert response.status_code == 200
     assert response.json() == [backend_note]
+
+
+def test_list_notes_can_filter_by_status() -> None:
+    done_note = client.post(
+        "/notes",
+        json={"title": "Write tests", "topic": "testing"},
+    ).json()
+    client.patch(f"/notes/{done_note['id']}", json={"status": "done"})
+    client.post(
+        "/notes",
+        json={"title": "Learn FastAPI", "topic": "backend"},
+    )
+
+    response = client.get("/notes?status=done")
+
+    assert response.status_code == 200
+    assert response.json()[0]["id"] == done_note["id"]
 
 
 def test_update_note_status() -> None:

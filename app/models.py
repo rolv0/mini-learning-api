@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import StrEnum
 from uuid import UUID
 
@@ -26,3 +27,4 @@ class Note(BaseModel):
     title: str
     topic: str
     status: NoteStatus
+    created_at: datetime
