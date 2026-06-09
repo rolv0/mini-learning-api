@@ -7,8 +7,12 @@ class NoteStore:
     def __init__(self) -> None:
         self._notes: dict[UUID, Note] = {}
 
-    def list_notes(self) -> list[Note]:
-        return list(self._notes.values())
+    def list_notes(self, topic: str | None = None) -> list[Note]:
+        notes = list(self._notes.values())
+        if topic is None:
+            return notes
+
+        return [note for note in notes if note.topic == topic]
 
     def create_note(self, payload: NoteCreate) -> Note:
         note = Note(

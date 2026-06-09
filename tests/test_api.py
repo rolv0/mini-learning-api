@@ -35,6 +35,22 @@ def test_create_and_list_notes() -> None:
     assert list_response.json() == [created]
 
 
+def test_list_notes_can_filter_by_topic() -> None:
+    backend_note = client.post(
+        "/notes",
+        json={"title": "Learn FastAPI", "topic": "backend"},
+    ).json()
+    client.post(
+        "/notes",
+        json={"title": "Practice pytest", "topic": "testing"},
+    )
+
+    response = client.get("/notes?topic=backend")
+
+    assert response.status_code == 200
+    assert response.json() == [backend_note]
+
+
 def test_update_note_status() -> None:
     note = client.post(
         "/notes",
