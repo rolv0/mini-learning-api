@@ -12,6 +12,17 @@ def setup_function() -> None:
     store.clear()
 
 
+def test_root_points_to_docs_and_health() -> None:
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "name": "Mini Learning API",
+        "docs": "/docs",
+        "health": "/health",
+    }
+
+
 def test_health_check() -> None:
     response = client.get("/health")
 

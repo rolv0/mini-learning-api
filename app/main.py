@@ -14,6 +14,15 @@ app = FastAPI(
 store = NoteStore()
 
 
+@app.get("/")
+def root() -> dict[str, str]:
+    return {
+        "name": "Mini Learning API",
+        "docs": "/docs",
+        "health": "/health",
+    }
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
